@@ -36,34 +36,13 @@ class SupabaseHelper {
   }
 
   // get active user
-  User getActiveUser() {
+  User ? getActiveUser() {
     final user = Supabase.instance.client.auth.user();
     if (user != null) {
       return user;
     }
-    throw Exception('Couldn\'t get active user, user null');
+    return null;
+    // throw Exception('Couldn\'t get active user, user null');
   }
 
-  createNewProfileForActiveUser(Map uData) async {
-    print(uData);
-    final res = await Supabase.instance.client.from('profiles').insert([
-      {
-        'id': uData['id'],
-        'name': uData['uName'],
-        'email': uData['uEmail'],
-      }
-    ]).execute();
-    print(res.error);
-  }
-
-  // Upload img to storage bucket
-  // uploadProfileAvatar(entireFile) async {
-  //   final storageResponse = await Supabase.instance.client
-  //     .storage
-  //     .from('public')
-  //     .upload( entireFile['name'], entireFile);
-
-  //     print(storageResponse.error);
-  //     print(storageResponse.data);
-  // }
 } 
