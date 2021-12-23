@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 import 'package:email_validator/email_validator.dart';
 
+import 'alert.dart';
+
 class AuthForm extends StatefulWidget {
   final String titleText;
   const AuthForm({Key? key, required this.titleText}) : super(key: key);
@@ -104,6 +106,8 @@ class _AuthFormState extends State<AuthForm> {
                       try {
                         SupabaseHelper()
                             .signInExistingUser(_email.text, _password.text);
+                        _email.text = '';
+                        _password.text = '';
                         Navigator.pushNamed(context, '/home');
                       } catch (e) {
                         throw Exception(e.toString());
@@ -116,34 +120,10 @@ class _AuthFormState extends State<AuthForm> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertDialog(
-                              contentPadding: const EdgeInsets.all(16),
-                              backgroundColor: Colors.grey[800],
-                              title: const Text(
-                                'Verification code sent!',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                              content: const Text(
-                                'Please check your email to verify and continue',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white60,
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text(
-                                    'Got it',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ],
+                            return AlertUI(
+                              headerText: 'Verification code sent!',
+                              bodyText: 'Please check your email to verify and continue',
+                              closeAlertBtnText: 'Got it',
                             );
                           },
                         );
