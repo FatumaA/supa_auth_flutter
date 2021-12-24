@@ -4,18 +4,18 @@ import 'package:email_validator/email_validator.dart';
 
 import 'alert.dart';
 
-class AuthForm extends StatefulWidget {
+class EmailOnlyFieldForm extends StatefulWidget {
   final String titleText;
-  const AuthForm({Key? key, required this.titleText}) : super(key: key);
+  const EmailOnlyFieldForm({Key? key, required this.titleText})
+      : super(key: key);
 
   @override
-  _AuthFormState createState() => _AuthFormState();
+  _EmailOnlyFieldFormState createState() => _EmailOnlyFieldFormState();
 }
 
-class _AuthFormState extends State<AuthForm> {
+class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
-  final _password = TextEditingController();
 
   @override
   void initState() {
@@ -25,7 +25,6 @@ class _AuthFormState extends State<AuthForm> {
   @override
   void dispose() {
     _email.dispose();
-    _password.dispose();
     super.dispose();
   }
 
@@ -72,57 +71,47 @@ class _AuthFormState extends State<AuthForm> {
               const SizedBox(
                 height: 16,
               ),
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty || value.length < 6) {
-                    return 'Please enter a password that is atleast 6 characters long';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.lock),
-                  prefixStyle: TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter your password',
-                ),
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-                controller: _password,
-              ),
-              const SizedBox(
-                height: 16,
-              ),
               SizedBox(
                 width: double.infinity,
                 height: 40,
                 child: ElevatedButton(
                   child: Text(
-                    widget.titleText == 'Sign In' ? 'Sign In' : 'Sign Up',
+                    widget.titleText ==
+                            'Enter your email address to reset your password'
+                        ? 'Send Reset Email'
+                        : 'Sign Up',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate() &&
-                        widget.titleText == 'Sign In') {
+                        widget.titleText ==
+                            'Enter your email address to reset your password') {
                       try {
                         SupabaseHelper()
-                            .signInExistingUser(_email.text, _password.text);
+                            .resetExistingUserPassword(_email.text, '/home');
                         _email.text = '';
-                        _password.text = '';
-                        Navigator.pushNamed(context, '/home');
                       } catch (e) {
-                        throw Exception(e.toString());
-                      }
-                    } else if (_formKey.currentState!.validate() &&
-                        widget.titleText == 'Sign Up') {
-                      try {
-                        SupabaseHelper()
-                            .createNewUser(_email.text, _password.text);
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertUI(
-                              headerText: 'Verification code sent!',
+                              headerText: 'Oops! Something went wrong',
+                              bodyText: e.toString(),
+                              closeAlertBtnText: 'Got it',
+                            );
+                          },
+                        );
+                        _email.text = '';
+                        // throw Exception(e.toString());
+                      }
+                    } else {
+                      try {
+                        SupabaseHelper().createNewPasswordlessUser(_email.text);
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertUI(
+                              headerText: 'Verification link sent!',
                               bodyText:
                                   'Please check your email to verify and continue',
                               closeAlertBtnText: 'Got it',
@@ -130,9 +119,19 @@ class _AuthFormState extends State<AuthForm> {
                           },
                         );
                         _email.text = '';
-                        _password.text = '';
                       } catch (e) {
-                        throw Exception(e.toString());
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertUI(
+                              headerText: 'Oops! Something went wrong',
+                              bodyText: e.toString(),
+                              closeAlertBtnText: 'Got it',
+                            );
+                          },
+                        );
+                        _email.text = '';
+                        // throw Exception(e.toString());
                       }
                     }
                   },
@@ -141,39 +140,15 @@ class _AuthFormState extends State<AuthForm> {
               const SizedBox(
                 height: 10,
               ),
-              if (widget.titleText == 'Sign In')
-                Column(
-                  children: [
-                    TextButton(
-                      child: const Text(
-                        'Forgot Password? Click here',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/forgot-password');
-                      },
-                    ),
-                    TextButton(
-                      child: const Text(
-                        'Don\'t have an account? Sign Up',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/sign-up');
-                      },
-                    ),
-                  ],
+              TextButton(
+                child: const Text(
+                  'Remembered your password? Sign In',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-              if (widget.titleText == 'Sign Up')
-                TextButton(
-                  child: const Text(
-                    'Already have an account? Sign In',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/');
-                  },
-                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/');
+                },
+              ),
             ],
           ),
         ),
