@@ -9,6 +9,7 @@ import 'package:supa_auth_flutter/ui-elements/email_only_field_form.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'screens/auth-flow/magic_link_auth.dart';
+import 'screens/auth-flow/phone_auth.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         '/sign-up': (context) => const SignUp(),
         '/forgot-password': (context) => const ForgotPassword(),
         '/magic-link': (context) => const MagicLinkAuth(),
+        '/phone-auth': (context) => const PhoneAuth(),
         '/home': (context) => const Home(),
       },
     );

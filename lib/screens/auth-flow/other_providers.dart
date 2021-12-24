@@ -52,7 +52,9 @@ class _OtherProvidersState extends State<OtherProviders> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/phone-auth');
+                },
                 child: const Text(
                   'Sign in With Phone',
                   style: TextStyle(fontWeight: FontWeight.bold),
