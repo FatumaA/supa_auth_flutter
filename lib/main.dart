@@ -48,3 +48,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// http://localhost:53463/#/ 
+// flutter run -d chrome --web-port=1234

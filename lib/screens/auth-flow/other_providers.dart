@@ -41,7 +41,9 @@ class _OtherProvidersState extends State<OtherProviders> {
                 // style: const ButtonStyle(
                 //   backgroundColor: Colors.red.shade500,
                 // ),
-                onPressed: () {},
+                onPressed: () {
+                  SupabaseHelper().signInWithGoogle();
+                },
                 child: const Text(
                   'Sign in With Google',
                   style: TextStyle(

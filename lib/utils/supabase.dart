@@ -18,6 +18,23 @@ class SupabaseHelper {
     print(res);
   }
 
+  Future createNewPasswordlessUser(String email) async {
+    final res = await Supabase.instance.client.auth.signIn(
+      email: email,
+    );
+    final user = res.data?.user;
+    final error = res.error;
+    print(res);
+  }
+
+  Future signInWithGoogle() async {
+    final res =
+        await Supabase.instance.client.auth.signInWithProvider(Provider.google);
+        return res;
+    
+    print(res);
+  }
+
   Future signOutActiveUser() async {
     final res = await Supabase.instance.client.auth.signOut();
     final error = res.error;
@@ -36,7 +53,7 @@ class SupabaseHelper {
   }
 
   // get active user
-  User ? getActiveUser() {
+  User? getActiveUser() {
     final user = Supabase.instance.client.auth.user();
     if (user != null) {
       return user;
@@ -44,5 +61,4 @@ class SupabaseHelper {
     return null;
     // throw Exception('Couldn\'t get active user, user null');
   }
-
-} 
+}
