@@ -17,27 +17,32 @@ class _HomeState extends State<Home> {
     if (activeUser == null) {
       Navigator.pop(context, '/');
     }
-    return Center(
-      child: Column(
-        children: [
-          const Text(
-            'Karibu! You are logged In successfully',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          ),
-          const SizedBox(
-            height: 100,
-          ),
-          TextButton(
-            onPressed: () {
-              SupabaseHelper().signOutActiveUser();
-              Navigator.pop(context, '/');
-            },
-            child: const Text(
-              'Sign Out',
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('SupaFlutter Auth'),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            const Text(
+              'Karibu! You are logged In successfully',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
-          )
-        ],
+            const SizedBox(
+              height: 100,
+            ),
+            TextButton(
+              onPressed: () {
+                SupabaseHelper().signOutActiveUser();
+                Navigator.pop(context, '/');
+              },
+              child: const Text(
+                'Sign Out',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

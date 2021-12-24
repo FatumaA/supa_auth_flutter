@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supa_auth_flutter/screens/auth-flow/other_providers.dart';
 import 'package:supa_auth_flutter/ui-elements/form.dart';
 
 
@@ -11,8 +12,13 @@ class SignIn extends StatelessWidget {
       appBar: AppBar(
         title: const Text('SupaFlutter Auth'),
       ),
-      body: const AuthForm(
-        titleText: 'Sign In',
+      body: Column(
+        children: const [
+          AuthForm(
+            titleText: 'Sign In',
+          ),
+          OtherProviders(),
+        ],
       ),
     );
   }
