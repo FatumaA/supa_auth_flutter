@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supa_auth_flutter/utils/supabase.dart';
 
 class OtherProviders extends StatefulWidget {
   const OtherProviders({Key? key}) : super(key: key);
@@ -56,7 +57,9 @@ class _OtherProvidersState extends State<OtherProviders> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/magic-link');
+                },
                 child: const Text(
                   'Passwordless Sign In',
                   style: TextStyle(fontWeight: FontWeight.bold),

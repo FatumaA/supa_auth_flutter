@@ -5,7 +5,10 @@ import 'package:supa_auth_flutter/screens/auth-flow/forgot_password.dart';
 import 'package:supa_auth_flutter/screens/auth-flow/sign_in.dart';
 import 'package:supa_auth_flutter/screens/auth-flow/sign_up.dart';
 import 'package:supa_auth_flutter/screens/home.dart';
+import 'package:supa_auth_flutter/ui-elements/email_only_field_form.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'screens/auth-flow/magic_link_auth.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -39,7 +42,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SignIn(),
         '/sign-up': (context) => const SignUp(),
         '/forgot-password': (context) => const ForgotPassword(),
-        '/home': (context) => Home(),
+        '/magic-link': (context) => const MagicLinkAuth(),
+        '/home': (context) => const Home(),
       },
     );
   }

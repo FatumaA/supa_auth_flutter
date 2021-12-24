@@ -141,8 +141,11 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                 height: 10,
               ),
               TextButton(
-                child: const Text(
-                  'Remembered your password? Sign In',
+                child: Text(
+                  widget.titleText ==
+                          'Enter your email address to reset your password'
+                      ? 'Remembered your password? Sign In'
+                      : '',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
