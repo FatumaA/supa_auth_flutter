@@ -86,7 +86,7 @@ class SupabaseHelper {
     if (user != null) {
       return user;
     }
-    return null;
-    // throw Exception('Couldn\'t get active user, user null');
+    // return null;
+    throw Exception('Couldn\'t get active user, user null');
   }
 }

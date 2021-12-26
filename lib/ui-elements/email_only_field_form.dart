@@ -6,7 +6,8 @@ import 'alert.dart';
 
 class EmailOnlyFieldForm extends StatefulWidget {
   final String titleText;
-  const EmailOnlyFieldForm({Key? key, required this.titleText})
+
+  const EmailOnlyFieldForm({Key? key, required this.titleText })
       : super(key: key);
 
   @override
@@ -50,18 +51,30 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                 ),
               ),
               TextFormField(
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      !EmailValidator.validate(_email.text)) {
-                    return 'Please enter a valid email address';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.email),
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter your email',
+                validator: widget.titleText !=
+                        'Enter your email address/phone to reset your password'
+                    ? (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            !EmailValidator.validate(_email.text)) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      }
+                    : (value) {
+                        if (value == null ||
+                            value.isEmpty || value.length < 4) {
+                          return 'Contact field must be valid and not empty';
+                        }
+                        return null;
+                      },
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.email),
+                  border: const OutlineInputBorder(),
+                  hintText: widget.titleText ==
+                          'Enter your email address/phone to reset your password'
+                      ? 'Enter your contact'
+                      : 'Enter your email',
                 ),
                 style: const TextStyle(
                   color: Colors.white,
@@ -77,19 +90,31 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                 child: ElevatedButton(
                   child: Text(
                     widget.titleText ==
-                            'Enter your email address to reset your password'
-                        ? 'Send Reset Email'
-                        : 'Sign Up',
+                            'Enter your email address/phone to reset your password'
+                        ? 'Send Reset Link'
+                        : 'Send Magic Link',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate() &&
                         widget.titleText ==
-                            'Enter your email address to reset your password') {
+                            'Enter your email address/phone to reset your password') {
                       try {
-                        SupabaseHelper()
-                            .resetExistingUserPassword(_email.text, '/home');
+                        final res = await SupabaseHelper()
+                            .resetExistingUserPassword(_email.text, 'http://localhost:53463/#/home');
                         _email.text = '';
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertUI(
+                              headerText: 'Verification link sent!',
+                              bodyText:
+                                  'Please check your email/phone to verify and continue',
+                              closeAlertBtnText: 'Got it',
+                            );
+                          },
+                        );
+                        // Navigator.popAndPushNamed(context, '/home');
                       } catch (e) {
                         showDialog(
                           context: context,
@@ -106,7 +131,8 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                       }
                     } else {
                       try {
-                        SupabaseHelper().createNewPasswordlessUser(_email.text);
+                        await SupabaseHelper()
+                            .createNewPasswordlessUser(_email.text);
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -146,7 +172,7 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                           'Enter your email address to reset your password'
                       ? 'Remembered your password? Sign In'
                       : '',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
                   Navigator.pushNamed(context, '/');

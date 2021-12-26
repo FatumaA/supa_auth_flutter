@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/ui-elements/form.dart';
 
+import 'other_providers.dart';
+
 class SignUp extends StatelessWidget {
   const SignUp({Key? key}) : super(key: key);
 
@@ -10,8 +12,13 @@ class SignUp extends StatelessWidget {
       appBar: AppBar(
         title: const Text('SupaFlutter Auth'),
       ),
-      body: const AuthForm(
-        titleText: 'Sign Up',
+      body: Column(
+        children: [
+          const AuthForm(
+            titleText: 'Sign Up',
+          ),
+          OtherProviders(contextText: 'Sign Up'),
+        ],
       ),
     );
   }

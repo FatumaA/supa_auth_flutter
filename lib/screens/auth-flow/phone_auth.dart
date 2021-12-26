@@ -98,7 +98,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                   child: ElevatedButton(
                     child: const Text(
                       'Sign Up',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {

@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mapumziko',
+      title: 'Supa Auth Flutter',
       theme: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.teal,
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SignIn(),
         '/sign-up': (context) => const SignUp(),
         '/forgot-password': (context) => const ForgotPassword(),
-        '/magic-link': (context) => const MagicLinkAuth(),
+        '/magic-link': (context) => MagicLinkAuth(),
         '/phone-auth': (context) => const PhoneAuth(),
         '/home': (context) => const Home(),
       },

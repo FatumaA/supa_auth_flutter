@@ -15,25 +15,27 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     if (activeUser == null) {
-      Navigator.pop(context, '/');
+      Navigator.popAndPushNamed(context, '/');
     }
+      // print(activeUser);
     return Scaffold(
       appBar: AppBar(
         title: const Text('SupaFlutter Auth'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(
           children: [
             const Text(
               'Karibu! You are logged In successfully',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
             ),
             const SizedBox(
               height: 100,
             ),
             TextButton(
-              onPressed: () {
-                SupabaseHelper().signOutActiveUser();
+              onPressed: () async {
+                await SupabaseHelper().signOutActiveUser();
                 Navigator.pop(context, '/');
               },
               child: const Text(

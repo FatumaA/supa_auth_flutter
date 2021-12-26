@@ -13,7 +13,7 @@ class ForgotPassword extends StatelessWidget {
         title: const Text('SupaFlutter Auth'),
       ),
       body: const EmailOnlyFieldForm(
-        titleText: 'Enter your email address to reset your password',
+        titleText: 'Enter your email address/phone to reset your password',
       ),
     );
   }

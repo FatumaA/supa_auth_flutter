@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 
 class OtherProviders extends StatefulWidget {
-  const OtherProviders({Key? key}) : super(key: key);
+  String contextText;
+
+  OtherProviders({Key? key, required this.contextText}) : super(key: key);
 
   @override
   _OtherProvidersState createState() => _OtherProvidersState();
@@ -38,35 +40,45 @@ class _OtherProvidersState extends State<OtherProviders> {
             shrinkWrap: true,
             children: [
               ElevatedButton(
-                // style: const ButtonStyle(
-                //   backgroundColor: Colors.red.shade500,
-                // ),
                 onPressed: () {
                   SupabaseHelper().signInWithGoogle();
                 },
-                child: const Text(
-                  'Sign in With Google',
-                  style: TextStyle(
+                child: Text(
+                  widget.contextText == 'Sign In'
+                      ? 'Sign in With Google'
+                      : 'Sign up With Google',
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/phone-auth');
+                  Navigator.pushNamed(
+                    context,
+                    '/phone-auth',
+                    arguments: {"ctxText": widget.contextText},
+                  );
                 },
-                child: const Text(
-                  'Sign in With Phone',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                child: Text(
+                  widget.contextText == 'Sign In'
+                      ? 'Sign in With Phone'
+                      : 'Sign up With Phone',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/magic-link');
+                  Navigator.pushNamed(
+                    context,
+                    '/magic-link',
+                  );
                 },
-                child: const Text(
-                  'Passwordless Sign In',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                child: Text(
+                  widget.contextText == 'Sign In'
+                      ? 'Passwordless Sign In'
+                      : 'Passwordless Sign Up',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ],

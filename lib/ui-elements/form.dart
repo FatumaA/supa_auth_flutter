@@ -101,11 +101,11 @@ class _AuthFormState extends State<AuthForm> {
                     widget.titleText == 'Sign In' ? 'Sign In' : 'Sign Up',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate() &&
                         widget.titleText == 'Sign In') {
                       try {
-                        SupabaseHelper()
+                        await SupabaseHelper()
                             .signInExistingUser(_email.text, _password.text);
                         _email.text = '';
                         _password.text = '';
@@ -116,7 +116,7 @@ class _AuthFormState extends State<AuthForm> {
                     } else if (_formKey.currentState!.validate() &&
                         widget.titleText == 'Sign Up') {
                       try {
-                        SupabaseHelper()
+                        await SupabaseHelper()
                             .createNewUser(_email.text, _password.text);
                         showDialog(
                           context: context,
