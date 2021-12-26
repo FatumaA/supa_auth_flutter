@@ -1,12 +1,14 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+
 class SupabaseHelper {
+
   // email-password sign up
-  Future createNewUser(String email, String password) async {
+  Future<GotrueResponse> createNewUser(String email, String password) async {
+    
     final res = await Supabase.instance.client.auth.signUp(email, password);
-    final user = res.data?.user;
-    final error = res.error;
-    print(res.data);
+
+    return res;
   }
 
   // phone auth with password and verification step

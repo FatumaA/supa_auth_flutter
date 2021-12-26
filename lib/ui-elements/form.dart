@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'alert.dart';
 
@@ -104,36 +105,43 @@ class _AuthFormState extends State<AuthForm> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate() &&
                         widget.titleText == 'Sign In') {
-                      try {
-                        await SupabaseHelper()
-                            .signInExistingUser(_email.text, _password.text);
-                        _email.text = '';
-                        _password.text = '';
-                        Navigator.pushNamed(context, '/home');
-                      } catch (e) {
-                        throw Exception(e.toString());
-                      }
-                    } else if (_formKey.currentState!.validate() &&
-                        widget.titleText == 'Sign Up') {
-                      try {
-                        await SupabaseHelper()
-                            .createNewUser(_email.text, _password.text);
-                        showDialog(
+                      await SupabaseHelper()
+                          .signInExistingUser(_email.text, _password.text);
+                      _email.text = '';
+                      _password.text = '';
+                      Navigator.pushNamed(context, '/home');
+                    } else {
+                      final res = await SupabaseHelper()
+                          .createNewUser(_email.text, _password.text);
+                      if (res.error?.message != null) {
+                        await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertUI(
-                              headerText: 'Verification code sent!',
-                              bodyText:
-                                  'Please check your email to verify and continue',
+                              headerText: 'Error',
+                              bodyText: res.error!.message,
                               closeAlertBtnText: 'Got it',
                             );
                           },
                         );
-                        _email.text = '';
-                        _password.text = '';
-                      } catch (e) {
-                        throw Exception(e.toString());
+                        Navigator.popAndPushNamed(context, '/');
+                      } else {
+                        await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertUI(
+                              headerText: 'Success!',
+                              bodyText:
+                                  'Registration successfully, taking you to home screen',
+                              closeAlertBtnText: 'Got it',
+                            );
+                          },
+                        );
+                      Navigator.popAndPushNamed(context, '/home');
                       }
+
+                      _email.text = '';
+                      _password.text = '';
                     }
                   },
                 ),
