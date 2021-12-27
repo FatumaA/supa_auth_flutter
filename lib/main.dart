@@ -5,7 +5,6 @@ import 'package:supa_auth_flutter/screens/auth-flow/forgot_password.dart';
 import 'package:supa_auth_flutter/screens/auth-flow/sign_in.dart';
 import 'package:supa_auth_flutter/screens/auth-flow/sign_up.dart';
 import 'package:supa_auth_flutter/screens/home.dart';
-import 'package:supa_auth_flutter/ui-elements/email_only_field_form.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'screens/auth-flow/magic_link_auth.dart';
@@ -38,14 +37,14 @@ class MyApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
-      initialRoute: '/',
+      initialRoute: '',
       routes: {
-        '/': (context) => const SignIn(),
-        '/sign-up': (context) => const SignUp(),
-        '/forgot-password': (context) => const ForgotPassword(),
-        '/magic-link': (context) => MagicLinkAuth(),
-        '/phone-auth': (context) => const PhoneAuth(),
-        '/home': (context) => const Home(),
+        '': (context) => const SignIn(),
+        'sign-up': (context) => const SignUp(),
+        'forgot-password': (context) => const ForgotPassword(),
+        'magic-link': (context) => const MagicLinkAuth(),
+        'phone-auth': (context) => const PhoneAuth(),
+        'sign-in': (context) => const Home(),
       },
     );
   }
