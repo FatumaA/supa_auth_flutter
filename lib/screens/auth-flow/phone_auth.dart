@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/ui-elements/alert.dart';
+import 'package:supa_auth_flutter/ui-elements/verifications_alert.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 
 class PhoneAuth extends StatefulWidget {
@@ -10,6 +11,8 @@ class PhoneAuth extends StatefulWidget {
 }
 
 class _PhoneAuthState extends State<PhoneAuth> {
+  Map ? ctxText;
+
   final _formKey = GlobalKey<FormState>();
   final _phone = TextEditingController();
   final _password = TextEditingController();
@@ -28,6 +31,9 @@ class _PhoneAuthState extends State<PhoneAuth> {
 
   @override
   Widget build(BuildContext context) {
+    var args = ModalRoute.of(context)?.settings.arguments;
+    if (args != null) ctxText = args as Map;
+    // else Navigator.popAndPushNamed(context, '/');
     return Scaffold(
       appBar: AppBar(
         title: const Text('SupaFlutter Auth'),
@@ -40,11 +46,13 @@ class _PhoneAuthState extends State<PhoneAuth> {
             key: _formKey,
             child: Column(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text(
-                    'Sign Up With Phone',
-                    style: TextStyle(
+                    ctxText?['ctxText'] == 'Sign Up'
+                        ? 'Sign Up With Phone'
+                        : 'Sign In With Phone',
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
                       color: Colors.white,
@@ -59,7 +67,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                     return null;
                   },
                   decoration: const InputDecoration(
-                    icon: Icon(Icons.email),
+                    icon: Icon(Icons.phone),
                     border: OutlineInputBorder(),
                     hintText: 'Enter your phone number including country code',
                   ),
@@ -96,31 +104,62 @@ class _PhoneAuthState extends State<PhoneAuth> {
                   width: double.infinity,
                   height: 40,
                   child: ElevatedButton(
-                    child: const Text(
-                      'Sign Up',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    child: Text(
+                      ctxText?['ctxText'] == 'Sign Up' ? 'Sign Up' : 'Sign In',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        try {
-                          await SupabaseHelper().createNewPhoneUser(_phone.text, _password.text);
-                          showDialog(
+                      if (_formKey.currentState!.validate() &&
+                          ctxText?['ctxText'] == 'Sign Up') {
+                        final res = await SupabaseHelper()
+                            .createNewPhoneUser(_phone.text, _password.text);
+                        if (res.error?.message == null) {
+                          await showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AlertUI(
+                              return VerificationsAlertUI(
                                 phone: _phone.text,
                                 headerText: 'Enter your verification code',
-                                bodyText: '',
-                                closeAlertBtnText: '',
                               );
                             },
                           );
-                          _phone.text = '';
-                          _password.text = '';
-                          Navigator.pushNamed(context, '/home');
-                        } catch (e) {
-                          throw Exception(e.toString());
+                          res.user?.aud == 'authenticated' ? Navigator.pushNamed(context, '/home') : '';
+                        } else {
+                          print(res);
+                          await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertUI(
+                                headerText: 'Something went wrong',
+                                bodyText: res.error?.message as String,
+                                closeAlertBtnText: 'Got it',
+                              );
+                            },
+                          );
                         }
+                        _phone.text = '';
+                        _password.text = '';
+                      } else {
+                        final res = await SupabaseHelper()
+                            .signInUserWithPhone(_phone.text, _password.text);
+                        if (res.error?.message == null && res.user?.aud == 'authenticated')  {
+                          print(res.user?.aud);
+                          await Navigator.pushNamed(context, '/home');
+                        } else {
+                          print(res);
+                          await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertUI(
+                                headerText: 'Something went wrong',
+                                bodyText: res.error?.message as String,
+                                closeAlertBtnText: 'Got it',
+                              );
+                            },
+                          );
+                        }
+                        _phone.text = '';
+                        _password.text = '';
                       }
                     },
                   ),

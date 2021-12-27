@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supa_auth_flutter/ui-elements/alert.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 
 class OtherProviders extends StatefulWidget {
@@ -40,8 +41,26 @@ class _OtherProvidersState extends State<OtherProviders> {
             shrinkWrap: true,
             children: [
               ElevatedButton(
-                onPressed: () {
-                  SupabaseHelper().signInWithGoogle();
+                onPressed: () async {
+                  final res = await SupabaseHelper().signInWithGoogle();
+                  // print(res.error?.message);
+                  if(res != true) {
+                     showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertUI(
+                                headerText: 'Something went wrong',
+                                bodyText: 'errror',
+                                closeAlertBtnText: 'Ok',
+                              );
+                            },
+                          );
+                    
+                  }
+                  else {
+                    Navigator.popAndPushNamed(context, '/home');
+                    
+                  }
                 },
                 child: Text(
                   widget.contextText == 'Sign In'

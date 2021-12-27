@@ -7,7 +7,7 @@ import 'alert.dart';
 class EmailOnlyFieldForm extends StatefulWidget {
   final String titleText;
 
-  const EmailOnlyFieldForm({Key? key, required this.titleText })
+  const EmailOnlyFieldForm({Key? key, required this.titleText})
       : super(key: key);
 
   @override
@@ -63,7 +63,8 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                       }
                     : (value) {
                         if (value == null ||
-                            value.isEmpty || value.length < 4) {
+                            value.isEmpty ||
+                            value.length < 4) {
                           return 'Contact field must be valid and not empty';
                         }
                         return null;
@@ -99,41 +100,47 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                     if (_formKey.currentState!.validate() &&
                         widget.titleText ==
                             'Enter your email address/phone to reset your password') {
-                      try {
-                        final res = await SupabaseHelper()
-                            .resetExistingUserPassword(_email.text, 'http://localhost:53463/#/home');
-                        _email.text = '';
-                        showDialog(
+                      final res = await SupabaseHelper()
+                          .resetExistingUserPassword(_email.text,
+                              'http://localhost:53463/#/reset-password-dialog');
+                              print(res.rawData);
+                      _email.text = '';
+                      if (res.error == null) {
+                        await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertUI(
-                              headerText: 'Verification link sent!',
+                              headerText: 'Passoword reset link sent!',
                               bodyText:
-                                  'Please check your email/phone to verify and continue',
+                                  'Please check your email/phone to continue',
                               closeAlertBtnText: 'Got it',
                             );
                           },
                         );
-                        // Navigator.popAndPushNamed(context, '/home');
-                      } catch (e) {
+                      }
+
+                      // Navigator.popAndPushNamed(context, '/home');
+                      else {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertUI(
                               headerText: 'Oops! Something went wrong',
-                              bodyText: e.toString(),
+                              bodyText: res.error!.message,
                               closeAlertBtnText: 'Got it',
                             );
                           },
                         );
-                        _email.text = '';
-                        // throw Exception(e.toString());
                       }
+
+                      _email.text = '';
+                      // throw Exception(e.toString());
+
                     } else {
-                      try {
-                        await SupabaseHelper()
-                            .createNewPasswordlessUser(_email.text);
-                        showDialog(
+                      final res = await SupabaseHelper()
+                          .createNewPasswordlessUser(_email.text);
+                      if (res.error?.message == null) {
+                        await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertUI(
@@ -145,19 +152,18 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                           },
                         );
                         _email.text = '';
-                      } catch (e) {
+                      } else {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertUI(
                               headerText: 'Oops! Something went wrong',
-                              bodyText: e.toString(),
+                              bodyText: res.error!.message,
                               closeAlertBtnText: 'Got it',
                             );
                           },
                         );
                         _email.text = '';
-                        // throw Exception(e.toString());
                       }
                     }
                   },

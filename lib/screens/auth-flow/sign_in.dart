@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/screens/auth-flow/other_providers.dart';
 import 'package:supa_auth_flutter/ui-elements/form.dart';
-
+import 'package:supa_auth_flutter/utils/supabase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignIn extends StatelessWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -17,7 +18,9 @@ class SignIn extends StatelessWidget {
           const AuthForm(
             titleText: 'Sign In',
           ),
-         OtherProviders(contextText: 'Sign In',)
+          OtherProviders(
+            contextText: 'Sign In',
+          )
         ],
       ),
     );

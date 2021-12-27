@@ -14,8 +14,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    if (activeUser == null) {
-      Navigator.popAndPushNamed(context, '/');
+    if (activeUser?.aud != 'authenticated') {
+      Navigator.popAndPushNamed(context, '');
     }
       // print(activeUser);
     return Scaffold(

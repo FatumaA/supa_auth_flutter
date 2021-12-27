@@ -105,11 +105,36 @@ class _AuthFormState extends State<AuthForm> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate() &&
                         widget.titleText == 'Sign In') {
-                      await SupabaseHelper()
+                      final res = await SupabaseHelper()
                           .signInExistingUser(_email.text, _password.text);
-                      _email.text = '';
-                      _password.text = '';
-                      Navigator.pushNamed(context, '/home');
+                      if (res.error?.message != null) {
+                        await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertUI(
+                              headerText: 'Error',
+                              bodyText: res.error!.message,
+                              closeAlertBtnText: 'Got it',
+                            );
+                          },
+                        );
+                        _email.text = '';
+                        _password.text = '';
+                        Navigator.pushNamed(context, '/sign-in');
+                      } else {
+                        await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertUI(
+                              headerText: 'Success!',
+                              bodyText:
+                                  'Registration successfully, taking you to home screen',
+                              closeAlertBtnText: 'Got it',
+                            );
+                          },
+                        );
+                        Navigator.popAndPushNamed(context, '/home');
+                      }
                     } else {
                       final res = await SupabaseHelper()
                           .createNewUser(_email.text, _password.text);
@@ -124,7 +149,7 @@ class _AuthFormState extends State<AuthForm> {
                             );
                           },
                         );
-                        Navigator.popAndPushNamed(context, '/');
+                        Navigator.popAndPushNamed(context, '/sign-in');
                       } else {
                         await showDialog(
                           context: context,
@@ -137,7 +162,7 @@ class _AuthFormState extends State<AuthForm> {
                             );
                           },
                         );
-                      Navigator.popAndPushNamed(context, '/home');
+                        Navigator.popAndPushNamed(context, '/home');
                       }
 
                       _email.text = '';
