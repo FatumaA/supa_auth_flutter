@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/ui-elements/alert.dart';
-import 'package:supa_auth_flutter/ui-elements/verifications_alert.dart';
+import 'package:supa_auth_flutter/screens/auth-flow/verifications_alert.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 
 class PhoneAuth extends StatefulWidget {
@@ -11,7 +11,7 @@ class PhoneAuth extends StatefulWidget {
 }
 
 class _PhoneAuthState extends State<PhoneAuth> {
-  Map ? ctxText;
+  Map? ctxText;
 
   final _formKey = GlobalKey<FormState>();
   final _phone = TextEditingController();
@@ -114,18 +114,16 @@ class _PhoneAuthState extends State<PhoneAuth> {
                         final res = await SupabaseHelper()
                             .createNewPhoneUser(_phone.text, _password.text);
                         if (res.error?.message == null) {
-                          await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return VerificationsAlertUI(
-                                phone: _phone.text,
-                                headerText: 'Enter your verification code',
-                              );
+                          Navigator.popAndPushNamed(
+                            context,
+                            '/verification',
+                            arguments: {
+                              "phone": _phone.text,
+                              "headerText": 'Enter your verification code',
                             },
                           );
-                          res.user?.aud == 'authenticated' ? Navigator.pushNamed(context, '/home') : '';
                         } else {
-                          print(res);
+                          print('RES FROM CREATE NEW PHONE USER: $res');
                           await showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -142,11 +140,11 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       } else {
                         final res = await SupabaseHelper()
                             .signInUserWithPhone(_phone.text, _password.text);
-                        if (res.error?.message == null && res.user?.aud == 'authenticated')  {
-                          print(res.user?.aud);
+                        if (res.error?.message == null &&
+                            res.user?.aud == 'authenticated') {
+                          print('RES FROM PHONE SIGN IN: ${res.user?.aud}');
                           await Navigator.pushNamed(context, '/home');
                         } else {
-                          print(res);
                           await showDialog(
                             context: context,
                             builder: (BuildContext context) {

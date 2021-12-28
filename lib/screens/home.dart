@@ -13,11 +13,18 @@ class _HomeState extends State<Home> {
   User? activeUser = SupabaseHelper().getActiveUser();
 
   @override
-  Widget build(BuildContext context) {
-    if (activeUser?.aud != 'authenticated') {
-      Navigator.popAndPushNamed(context, '');
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_){
+     if (activeUser?.aud != 'authenticated') {
+      Navigator.popAndPushNamed(context, '/');
     }
-      // print(activeUser);
+  });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('SupaFlutter Auth'),

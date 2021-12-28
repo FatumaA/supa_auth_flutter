@@ -35,8 +35,7 @@ class SupabaseHelper {
       phone: phone,
       password: password,
     );
-    // .signIn(phone: phone, password: password);
-    print(res.error);
+
     return res;
   }
 
@@ -111,8 +110,7 @@ class SupabaseHelper {
 
   // get active user
   User? getActiveUser() {
-    final user = supaClient.auth.currentUser;
-    print('user: $user');
+    final user = supaClient.auth. currentUser;
 
     return user;
   }
