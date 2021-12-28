@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supa_auth_flutter/screens/auth-flow/reset_password.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 import 'package:email_validator/email_validator.dart';
 
@@ -102,7 +103,7 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                             'Enter your email address/phone to reset your password') {
                       final res = await SupabaseHelper()
                           .resetExistingUserPassword(_email.text,
-                              'http://localhost:53463/#/reset-password-dialog');
+                              'http://localhost:53463/reset-password-dialog');
                               print(res.rawData);
                       _email.text = '';
                       if (res.error == null) {

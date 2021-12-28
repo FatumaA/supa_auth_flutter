@@ -149,7 +149,7 @@ class _AuthFormState extends State<AuthForm> {
                             );
                           },
                         );
-                        Navigator.popAndPushNamed(context, '/sign-in');
+                        Navigator.popAndPushNamed(context, '/');
                       } else {
                         await showDialog(
                           context: context,

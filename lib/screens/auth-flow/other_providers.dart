@@ -43,14 +43,14 @@ class _OtherProvidersState extends State<OtherProviders> {
               ElevatedButton(
                 onPressed: () async {
                   final res = await SupabaseHelper().signInWithGoogle();
-                  // print(res.error?.message);
+                  print('res from google sign in: $res');
                   if(res != true) {
                      showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertUI(
                                 headerText: 'Something went wrong',
-                                bodyText: 'errror',
+                                bodyText: 'error',
                                 closeAlertBtnText: 'Ok',
                               );
                             },
@@ -58,7 +58,7 @@ class _OtherProvidersState extends State<OtherProviders> {
                     
                   }
                   else {
-                    Navigator.popAndPushNamed(context, '/home');
+                    Navigator.popAndPushNamed(context, '/home', arguments: {"resSocial": res});
                     
                   }
                 },
