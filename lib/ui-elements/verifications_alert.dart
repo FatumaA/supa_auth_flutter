@@ -50,15 +50,19 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
               TextFormField(
                 validator: (value) {
                   if (value == null || value.isEmpty || value.length < 6) {
-                    return 'Entered the wrong verification code';
+                    return widget.headerText != 'Reset Password'
+                        ? 'Entered the wrong verification code'
+                        : 'Password can\'t be empty and must be atleast 6 characters long';
                   }
                   return null;
                 },
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   icon: Icon(Icons.lock),
-                  prefixStyle: TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter your verfification code',
+                  prefixStyle: const TextStyle(color: Colors.white),
+                  border: const OutlineInputBorder(),
+                  hintText: widget.headerText != 'Reset Password'
+                      ? 'Enter your verfification code'
+                      : 'Enter new password',
                 ),
                 style: const TextStyle(
                   color: Colors.white,
@@ -73,14 +77,37 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                 height: 40,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
+                    if (_formKey.currentState!.validate() &&
+                        widget.headerText != 'Reset Password') {
                       final res = await SupabaseHelper()
                           .verifyPhoneUser(widget.phone!, _token.text);
                       print(res);
                       if (res.user?.aud == 'authenticated') {
                         print(res.user?.aud);
                         //  Navigator.popAndPushNamed(context, '/home');
-                         Navigator.pop(context);
+                        Navigator.pop(context);
+                      } else {
+                        return showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertUI(
+                              headerText: 'Error',
+                              bodyText: res.error!.message,
+                              closeAlertBtnText: 'Got it',
+                            );
+                          },
+                        );
+                      }
+                      _token.text = '';
+                    } else {
+                      print('QUERY PARAMS: ${Uri.base.queryParameters["access_token"]}');
+                      final res = await SupabaseHelper()
+                          .updateUserPassword(Uri.base.queryParameters["access_token"].toString(), _token.text);
+                      print(res);
+                      if (res.error?.message != null) {
+                        print(res.user?.aud);
+                        Navigator.popAndPushNamed(context, '/home');
+                        //  Navigator.pop(context);
                       } else {
                         return showDialog(
                           context: context,
@@ -96,9 +123,9 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                       _token.text = '';
                     }
                   },
-                  child: const Text(
-                    'Verify',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  child: Text(
+                    widget.headerText != 'Reset Password' ? 'Verify' : 'Reset Password',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               )
