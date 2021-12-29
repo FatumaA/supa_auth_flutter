@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/ui-elements/alert.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OtherProviders extends StatefulWidget {
   String contextText;
@@ -43,23 +44,21 @@ class _OtherProvidersState extends State<OtherProviders> {
               ElevatedButton(
                 onPressed: () async {
                   final res = await SupabaseHelper().signInWithGoogle();
-                  print('res from google sign in: $res');
-                  if(res != true) {
-                     showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertUI(
-                                headerText: 'Something went wrong',
-                                bodyText: 'error',
-                                closeAlertBtnText: 'Ok',
-                              );
-                            },
-                          );
-                    
-                  }
-                  else {
-                    Navigator.popAndPushNamed(context, '/home', arguments: {"resSocial": res});
-                    
+                  await Future.delayed(const Duration(seconds: 2));
+                  if (res != true) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertUI(
+                          headerText: 'Something went wrong',
+                          bodyText: 'error',
+                          closeAlertBtnText: 'Ok',
+                        );
+                      },
+                    );
+                  } else {
+                    Navigator.popAndPushNamed(context, '/home',
+                        arguments: {"resSocial": res});
                   }
                 },
                 child: Text(

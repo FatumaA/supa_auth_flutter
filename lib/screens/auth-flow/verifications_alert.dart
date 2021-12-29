@@ -95,7 +95,7 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                           if (_formKey.currentState!.validate() &&
                               data?["headerText"] != 'Reset Password') {
                             final res = await SupabaseHelper()
-                                .verifyPhoneUser(data!["phone"], _token.text);
+                                .verifyPhoneUser(data?["phone"], _token.text);
                             print('PHONE VERIIFICATION RESP: ${res.toString()}');
                             if (res != null) {
                                Navigator.popAndPushNamed(context, '/home');

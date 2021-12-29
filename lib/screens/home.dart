@@ -11,16 +11,18 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   User? activeUser = SupabaseHelper().getActiveUser();
+  Session? activeSession = SupabaseHelper().getActiveSession();
 
   @override
   void initState() {
     // TODO: implement initState
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      // Future.delayed(Duration(seconds: 2));
+      if (activeSession == null) {
+        Navigator.popAndPushNamed(context, '/');
+      }
+    });
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_){
-     if (activeUser?.aud != 'authenticated') {
-      Navigator.popAndPushNamed(context, '/');
-    }
-  });
   }
 
   @override
@@ -35,7 +37,10 @@ class _HomeState extends State<Home> {
           children: [
             const Text(
               'Karibu! You are logged In successfully',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.white),
             ),
             const SizedBox(
               height: 100,
