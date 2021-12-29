@@ -1,3 +1,4 @@
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHelper {
@@ -35,8 +36,7 @@ class SupabaseHelper {
       phone: phone,
       password: password,
     );
-    // .signIn(phone: phone, password: password);
-    print(res.error);
+
     return res;
   }
 
@@ -67,10 +67,6 @@ class SupabaseHelper {
       Provider.google,
       options: AuthOptions(redirectTo: 'http://localhost:53463/home'),
     );
-    // signInWithProvider(
-    //   Provider.google,
-    //   options: AuthOptions(redirectTo: 'http://localhost:53463/home'),
-    // );
 
     return res;
   }
@@ -112,8 +108,26 @@ class SupabaseHelper {
   // get active user
   User? getActiveUser() {
     final user = supaClient.auth.currentUser;
-    print('user: $user');
 
     return user;
+  }
+
+  Session? getActiveSession() {
+    Future.delayed(Duration(seconds: 2));
+    final sessionOne = supaClient.auth.session();
+    // onAuthStateChange((event, session) {
+    //    async (event, session) => {
+    //      print('SESSION: ${session}'),
+    //   };
+    // });
+    print('${sessionOne?.accessToken}');
+
+    return sessionOne;
+  }
+
+  Future<GotrueSessionResponse> getOauth2Session(Uri url) async {
+    final res = await supaClient.auth.getSessionFromUrl(url);
+    print('get Session from url : ${res.data?.user}');
+    return res;
   }
 }

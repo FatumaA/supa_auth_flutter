@@ -11,13 +11,22 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   User? activeUser = SupabaseHelper().getActiveUser();
+  Session? activeSession = SupabaseHelper().getActiveSession();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      // Future.delayed(Duration(seconds: 2));
+      if (activeSession == null) {
+        Navigator.popAndPushNamed(context, '/');
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (activeUser?.aud != 'authenticated') {
-      Navigator.popAndPushNamed(context, '');
-    }
-      // print(activeUser);
     return Scaffold(
       appBar: AppBar(
         title: const Text('SupaFlutter Auth'),
@@ -28,7 +37,10 @@ class _HomeState extends State<Home> {
           children: [
             const Text(
               'Karibu! You are logged In successfully',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.white),
             ),
             const SizedBox(
               height: 100,

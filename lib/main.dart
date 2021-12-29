@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supa_auth_flutter/screens/auth-flow/forgot_password.dart';
-import 'package:supa_auth_flutter/screens/auth-flow/reset_password.dart';
 import 'package:supa_auth_flutter/screens/auth-flow/sign_in.dart';
 import 'package:supa_auth_flutter/screens/auth-flow/sign_up.dart';
 import 'package:supa_auth_flutter/screens/home.dart';
-import 'package:supa_auth_flutter/utils/supabase.dart';
+import 'package:supa_auth_flutter/screens/auth-flow/verifications_alert.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -14,10 +13,12 @@ import 'screens/auth-flow/magic_link_auth.dart';
 import 'screens/auth-flow/phone_auth.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await Supabase.initialize(
     url: dotenv.env['SUPABASE_URL'],
     anonKey: dotenv.env['SUPABASE_ANON_KEY'],
+    authCallbackUrlHostname: 'http://localhost:53463/home',
   );
   setPathUrlStrategy();
   runApp(
@@ -45,9 +46,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SignIn(),
         '/sign-up': (context) => const SignUp(),
         '/forgot-password': (context) => const ForgotPassword(),
-        '/reset-password-dialog': (context) => const ResetPasswordDialog(),
         '/magic-link': (context) => const MagicLinkAuth(),
         '/phone-auth': (context) => const PhoneAuth(),
+        '/verification': (context) => VerificationsAlertUI(),
         '/home': (context) => const Home(),
       },
     );
