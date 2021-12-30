@@ -13,7 +13,7 @@ import 'screens/auth-flow/magic_link_auth.dart';
 import 'screens/auth-flow/phone_auth.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await Supabase.initialize(
     url: dotenv.env['SUPABASE_URL'],
