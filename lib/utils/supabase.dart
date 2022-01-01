@@ -6,7 +6,18 @@ class SupabaseHelper {
   // email-password sign up
   Future<GotrueSessionResponse> createNewUser(
       String email, String password) async {
-    final res = await Supabase.instance.client.auth.signUp(email, password);
+    final res = await supaClient.auth.signUp(email, password);
+
+    return res;
+  }
+
+  // email-password sign in
+  Future<GotrueSessionResponse> signInExistingUser(
+      String email, String password) async {
+    final res = await supaClient.auth.signIn(
+      email: email,
+      password: password,
+    );
 
     return res;
   }
@@ -34,17 +45,6 @@ class SupabaseHelper {
       String phone, String password) async {
     final res = await supaClient.auth.signIn(
       phone: phone,
-      password: password,
-    );
-
-    return res;
-  }
-
-  // email-password sign in
-  Future<GotrueSessionResponse> signInExistingUser(
-      String email, String password) async {
-    final res = await supaClient.auth.signIn(
-      email: email,
       password: password,
     );
 

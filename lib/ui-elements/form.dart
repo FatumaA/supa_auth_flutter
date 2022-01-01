@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'alert.dart';
 

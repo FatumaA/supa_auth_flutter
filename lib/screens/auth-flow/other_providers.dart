@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/ui-elements/alert.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class OtherProviders extends StatefulWidget {
   String contextText;

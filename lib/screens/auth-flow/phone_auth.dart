@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/ui-elements/alert.dart';
-import 'package:supa_auth_flutter/screens/auth-flow/verifications_alert.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 
 class PhoneAuth extends StatefulWidget {
@@ -33,7 +32,6 @@ class _PhoneAuthState extends State<PhoneAuth> {
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)?.settings.arguments;
     if (args != null) ctxText = args as Map;
-    // else Navigator.popAndPushNamed(context, '/');
     return Scaffold(
       appBar: AppBar(
         title: const Text('SupaFlutter Auth'),
@@ -47,7 +45,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Text(
                     ctxText?['ctxText'] == 'Sign Up'
                         ? 'Sign Up With Phone'

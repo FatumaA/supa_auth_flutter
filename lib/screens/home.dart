@@ -34,6 +34,7 @@ class _HomeState extends State<Home> {
       ),
       body: Center(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
               'Karibu! You are logged In successfully',
@@ -43,7 +44,7 @@ class _HomeState extends State<Home> {
                   color: Colors.white),
             ),
             const SizedBox(
-              height: 100,
+              height: 40,
             ),
             TextButton(
               onPressed: () async {

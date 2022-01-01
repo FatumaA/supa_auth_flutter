@@ -97,7 +97,7 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                             final res = await SupabaseHelper()
                                 .verifyPhoneUser(data?["phone"], _token.text);
                             print('PHONE VERIIFICATION RESP: ${res.toString()}');
-                            if (res != null) {
+                            if (res.error?.message != null) {
                                Navigator.popAndPushNamed(context, '/home');
                               // Navigator.pop(context);
                             } else {
