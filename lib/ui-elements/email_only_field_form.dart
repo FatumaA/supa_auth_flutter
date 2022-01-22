@@ -137,10 +137,11 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                       // throw Exception(e.toString());
 
                     } else {
-                      final res = await SupabaseHelper()
+                      print('reached here');
+                      final res = 
+                      await SupabaseHelper()
                           .createNewPasswordlessUser(_email.text);
-                      if (res.error?.message == null) {
-                        await showDialog(
+                          await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertUI(
@@ -151,8 +152,21 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                             );
                           },
                         );
+                      if (res.error?.message != null) {
+                        // Navigator.popAndPushNamed(context, '/home');
+                        // await showDialog(
+                        //   context: context,
+                        //   builder: (BuildContext context) {
+                        //     return AlertUI(
+                        //       headerText: 'Verification link sent!',
+                        //       bodyText:
+                        //           'Please check your email to verify and continue',
+                        //       closeAlertBtnText: 'Got it',
+                        //     );
+                        //   },
+                        // );
                         _email.text = '';
-                      } else {
+                      // } else {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {

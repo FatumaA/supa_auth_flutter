@@ -44,7 +44,8 @@ class _OtherProvidersState extends State<OtherProviders> {
                 onPressed: () async {
                   final res = await SupabaseHelper().signInWithGoogle();
                   await Future.delayed(const Duration(seconds: 2));
-                  if (res != true) {
+                  print('GOOGLEEEE: ${res.user?.email}');
+                  if (res.error?.message != null) {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -56,7 +57,7 @@ class _OtherProvidersState extends State<OtherProviders> {
                       },
                     );
                   } else {
-                    Navigator.popAndPushNamed(context, '/home',
+                    await Navigator.popAndPushNamed(context, '/home',
                         arguments: {"resSocial": res});
                   }
                 },

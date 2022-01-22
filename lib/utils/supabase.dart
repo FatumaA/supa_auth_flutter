@@ -1,4 +1,4 @@
-import 'package:flutter_web_auth/flutter_web_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHelper {
@@ -13,7 +13,7 @@ class SupabaseHelper {
 
   // email-password sign in
   Future<GotrueSessionResponse> signInExistingUser(
-      String email, String password) async {
+      String email, String ? password) async {
     final res = await supaClient.auth.signIn(
       email: email,
       password: password,
@@ -37,7 +37,7 @@ class SupabaseHelper {
       token,
       options: AuthOptions(redirectTo: 'http://localhost:53463/home'),
     );
-
+  
     return res;
   }
 
@@ -50,22 +50,31 @@ class SupabaseHelper {
 
     return res;
   }
-
+//  final GlobalKey<NavigatorState> navigatorKey =
+//       GlobalKey<NavigatorState>();
   // email magic link sign in
   Future<GotrueSessionResponse> createNewPasswordlessUser(String email) async {
     final res = await supaClient.auth.signIn(
       email: email,
       options: AuthOptions(redirectTo: 'http://localhost:53463/home'),
     );
-
+    // if(res.error?.message == null) {
+    //   await navigatorKey.currentState?.pushNamed('/home');
+    // }
     return res;
   }
 
   // social login with Google
-  Future<bool> signInWithGoogle() async {
-    final res = await supaClient.auth.signInWithProvider(
-      Provider.google,
-      options: AuthOptions(redirectTo: 'http://localhost:53463/home'),
+  Future<GotrueSessionResponse> signInWithGoogle() async {
+    final res = await supaClient.auth.signIn(
+      provider: Provider.google,
+      
+  // scopes: 'repo gist notifications',
+      // AuthOptions(redirectTo: 'http://localhost:53463/home'
+      // //  kIsWeb
+      // //     ? null
+      // //     : 'io.supabase.flutter://reset-callback/'
+      //     ),
     );
 
     return res;
@@ -107,20 +116,21 @@ class SupabaseHelper {
 
   // get active user
   User? getActiveUser() {
-    final user = supaClient.auth.currentUser;
+    final user = supaClient.auth.user();
 
     return user;
   }
 
   Session? getActiveSession() {
-    Future.delayed(Duration(seconds: 2));
-    final sessionOne = supaClient.auth.session();
+    // Future.delayed(Duration(seconds: 2));
+    final sessionOne = supaClient.auth.currentSession; 
+    // .session();
     // onAuthStateChange((event, session) {
     //    async (event, session) => {
     //      print('SESSION: ${session}'),
     //   };
     // });
-    print('${sessionOne?.accessToken}');
+    print('${sessionOne?.user?.id}');
 
     return sessionOne;
   }

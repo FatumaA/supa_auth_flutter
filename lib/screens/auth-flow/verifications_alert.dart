@@ -7,7 +7,7 @@ class VerificationsAlertUI extends StatefulWidget {
   // String headerText;
   // String? phone, ctxText;
 
-  VerificationsAlertUI({Key? key}) : super(key: key);
+  const VerificationsAlertUI({Key? key}) : super(key: key);
 
   @override
   State<VerificationsAlertUI> createState() => _VerificationsAlertUIState();
@@ -96,11 +96,12 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                               data?["headerText"] != 'Reset Password') {
                             final res = await SupabaseHelper()
                                 .verifyPhoneUser(data?["phone"], _token.text);
-                            print('PHONE VERIIFICATION RESP: ${res.toString()}');
-                            if (res.error?.message != null) {
-                               Navigator.popAndPushNamed(context, '/home');
+                            print('PHONE VERIIFICATION RESP: ${res.error}, ${res.user}');
+                            if (res.error?.message == null) {
+                               await Navigator.popAndPushNamed(context, '/home');
                               // Navigator.pop(context);
-                            } else {
+                            } 
+                            else {
                               return showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
