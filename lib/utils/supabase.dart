@@ -13,7 +13,7 @@ class SupabaseHelper {
 
   // email-password sign in
   Future<GotrueSessionResponse> signInExistingUser(
-      String email, String ? password) async {
+      String email, String? password) async {
     final res = await supaClient.auth.signIn(
       email: email,
       password: password,
@@ -37,7 +37,7 @@ class SupabaseHelper {
       token,
       options: AuthOptions(redirectTo: 'http://localhost:53463/home'),
     );
-  
+
     return res;
   }
 
@@ -62,18 +62,17 @@ class SupabaseHelper {
 
   // social login with Google
   Future<bool> signInWithGoogle() async {
-    final res = await supaClient.auth.signInWithProvider(
-      Provider.google,
-      options: AuthOptions(redirectTo: 'http://localhost:53463/home', 
-      scopes: '')
-      
-  // scopes: 'repo gist notifications',
-      // AuthOptions(redirectTo: 'http://localhost:53463/home'
-      // //  kIsWeb
-      // //     ? null
-      // //     : 'io.supabase.flutter://reset-callback/'
-      //     ),
-    );
+    final res = await supaClient.auth.signInWithProvider(Provider.google,
+        options:
+            AuthOptions(redirectTo: 'http://localhost:53463/home', scopes: '')
+
+        // scopes: 'repo gist notifications',
+        // AuthOptions(redirectTo: 'http://localhost:53463/home'
+        // //  kIsWeb
+        // //     ? null
+        // //     : 'io.supabase.flutter://reset-callback/'
+        //     ),
+        );
 
     return res;
   }
@@ -94,6 +93,20 @@ class SupabaseHelper {
         redirectTo: urlPath,
       ),
     );
+
+    return res;
+  }
+
+  Future<GotrueUserResponse> getUrl(
+      String accessToken, String password) async {
+    final res = await supaClient.auth.api.updateUser(
+      accessToken,
+      UserAttributes(password: password),
+    );
+
+    //  final res = await Supabase.instance.client.auth.update(
+    //     UserAttributes(data: {'password': password})
+    // );
 
     return res;
   }
@@ -121,7 +134,7 @@ class SupabaseHelper {
 
   Session? getActiveSession() {
     // Future.delayed(Duration(seconds: 2));
-    final sessionOne = supaClient.auth.currentSession; 
+    final sessionOne = supaClient.auth.currentSession;
     // .session();
     // onAuthStateChange((event, session) {
     //    async (event, session) => {
