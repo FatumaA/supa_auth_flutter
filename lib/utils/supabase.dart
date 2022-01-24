@@ -50,24 +50,22 @@ class SupabaseHelper {
 
     return res;
   }
-//  final GlobalKey<NavigatorState> navigatorKey =
-//       GlobalKey<NavigatorState>();
+
   // email magic link sign in
   Future<GotrueSessionResponse> createNewPasswordlessUser(String email) async {
     final res = await supaClient.auth.signIn(
       email: email,
-      options: AuthOptions(redirectTo: 'http://localhost:53463/home'),
     );
-    // if(res.error?.message == null) {
-    //   await navigatorKey.currentState?.pushNamed('/home');
-    // }
+
     return res;
   }
 
   // social login with Google
-  Future<GotrueSessionResponse> signInWithGoogle() async {
-    final res = await supaClient.auth.signIn(
-      provider: Provider.google,
+  Future<bool> signInWithGoogle() async {
+    final res = await supaClient.auth.signInWithProvider(
+      Provider.google,
+      options: AuthOptions(redirectTo: 'http://localhost:53463/home', 
+      scopes: '')
       
   // scopes: 'repo gist notifications',
       // AuthOptions(redirectTo: 'http://localhost:53463/home'

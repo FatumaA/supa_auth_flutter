@@ -103,7 +103,8 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                       final res = await SupabaseHelper()
                           .resetExistingUserPassword(_email.text,
                               'http://localhost:53463/verification');
-                              print('RES FROM RESET EXISITNG USER PASSWORD: ${res.rawData}');
+                      print(
+                          'RES FROM RESET EXISITNG USER PASSWORD: ${res.rawData}');
                       _email.text = '';
                       if (res.error == null) {
                         await showDialog(
@@ -138,10 +139,10 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
 
                     } else {
                       print('reached here');
-                      final res = 
-                      await SupabaseHelper()
+                      final res = await SupabaseHelper()
                           .createNewPasswordlessUser(_email.text);
-                          await showDialog(
+                      if (res.error?.message != null) {
+                        await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertUI(
@@ -152,21 +153,8 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                             );
                           },
                         );
-                      if (res.error?.message != null) {
-                        // Navigator.popAndPushNamed(context, '/home');
-                        // await showDialog(
-                        //   context: context,
-                        //   builder: (BuildContext context) {
-                        //     return AlertUI(
-                        //       headerText: 'Verification link sent!',
-                        //       bodyText:
-                        //           'Please check your email to verify and continue',
-                        //       closeAlertBtnText: 'Got it',
-                        //     );
-                        //   },
-                        // );
                         _email.text = '';
-                      // } else {
+                      } else {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {

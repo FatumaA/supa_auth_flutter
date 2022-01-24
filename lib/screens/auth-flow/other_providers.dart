@@ -44,8 +44,8 @@ class _OtherProvidersState extends State<OtherProviders> {
                 onPressed: () async {
                   final res = await SupabaseHelper().signInWithGoogle();
                   await Future.delayed(const Duration(seconds: 2));
-                  print('GOOGLEEEE: ${res.user?.email}');
-                  if (res.error?.message != null) {
+                  print('GOOGLEEEE: $res');
+                  if (res != true) {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
