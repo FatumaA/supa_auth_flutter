@@ -103,7 +103,8 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                       final res = await SupabaseHelper()
                           .resetExistingUserPassword(_email.text,
                               'http://localhost:53463/verification');
-                              print('RES FROM RESET EXISITNG USER PASSWORD: ${res.rawData}');
+                      print(
+                          'RES FROM RESET EXISITNG USER PASSWORD: ${res.rawData}');
                       _email.text = '';
                       if (res.error == null) {
                         await showDialog(
@@ -137,9 +138,10 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                       // throw Exception(e.toString());
 
                     } else {
+                      print('reached here');
                       final res = await SupabaseHelper()
                           .createNewPasswordlessUser(_email.text);
-                      if (res.error?.message == null) {
+                      if (res.error?.message != null) {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) {

@@ -134,7 +134,7 @@ packages:
       name: gotrue
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.2"
+    version: "0.1.3"
   hive:
     dependency: transitive
     description:
@@ -295,7 +295,7 @@ packages:
       name: realtime_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.12+1"
+    version: "0.1.14"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -342,14 +342,14 @@ packages:
       name: supabase
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.10"
+    version: "0.2.13"
   supabase_flutter:
     dependency: "direct main"
     description:
       name: supabase_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.9"
+    version: "0.2.11"
   term_glyph:
     dependency: transitive
     description:

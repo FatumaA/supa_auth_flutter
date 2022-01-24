@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'alert.dart';
 
@@ -107,6 +106,7 @@ class _AuthFormState extends State<AuthForm> {
                         widget.titleText == 'Sign In') {
                       final res = await SupabaseHelper()
                           .signInExistingUser(_email.text, _password.text);
+                          print('RESSSS: ${res}');
                       if (res.error?.message != null) {
                         await showDialog(
                           context: context,
@@ -120,7 +120,7 @@ class _AuthFormState extends State<AuthForm> {
                         );
                         _email.text = '';
                         _password.text = '';
-                        Navigator.pushNamed(context, '/sign-in');
+                        Navigator.pushNamed(context, '/');
                       } else {
                         await showDialog(
                           context: context,

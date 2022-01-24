@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         '/forgot-password': (context) => const ForgotPassword(),
         '/magic-link': (context) => const MagicLinkAuth(),
         '/phone-auth': (context) => const PhoneAuth(),
-        '/verification': (context) => VerificationsAlertUI(),
+        '/verification': (context) => const VerificationsAlertUI(),
         '/home': (context) => const Home(),
       },
     );
@@ -56,4 +56,4 @@ class MyApp extends StatelessWidget {
 }
 
 // http://localhost:53463/#/ 
-// flutter run -d chrome --web-port=1234
+// flutter run -d chrome --web-port=53463

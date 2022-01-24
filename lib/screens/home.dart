@@ -10,15 +10,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Map? googleData;
   User? activeUser = SupabaseHelper().getActiveUser();
   Session? activeSession = SupabaseHelper().getActiveSession();
 
   @override
   void initState() {
+    print(activeSession);
     // TODO: implement initState
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       // Future.delayed(Duration(seconds: 2));
-      if (activeSession == null) {
+      // print(googleData?["resSocial"]);
+      print(activeUser);
+      print('object');
+      if (activeSession == null || activeUser == null) {
         Navigator.popAndPushNamed(context, '/');
       }
     });
@@ -27,6 +32,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    var args = ModalRoute.of(context)?.settings.arguments;
+    if (args != null) googleData = args as Map;
     return Scaffold(
       appBar: AppBar(
         title: const Text('SupaFlutter Auth'),
@@ -34,6 +41,7 @@ class _HomeState extends State<Home> {
       ),
       body: Center(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
               'Karibu! You are logged In successfully',
@@ -43,7 +51,7 @@ class _HomeState extends State<Home> {
                   color: Colors.white),
             ),
             const SizedBox(
-              height: 100,
+              height: 40,
             ),
             TextButton(
               onPressed: () async {
