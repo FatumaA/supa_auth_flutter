@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../ui-elements/alert.dart';
 
@@ -28,6 +29,17 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
     _token.dispose();
     super.dispose();
   }
+
+  // test() {
+  //   final uriParameters = SupabaseAuth.instance.parseUriParameters(Uri.base);
+  //   // if (uriParameters.containsKey('access_token') &&
+  //   //     uriParameters.containsKey('refresh_token') &&
+  //   //     uriParameters.containsKey('expires_in')) {
+  //   //   /// Uri.base is a auth redirect link
+  //   //   /// Call recoverSessionFromUrl to continue
+  //   //   recoverSessionFromUrl(Uri.base);
+  //   // }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +84,7 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                         return null;
                       },
                       decoration: InputDecoration(
-                        icon: Icon(Icons.lock),
+                        icon: const Icon(Icons.lock),
                         prefixStyle: const TextStyle(color: Colors.white),
                         border: const OutlineInputBorder(),
                         hintText: data?["headerText"] != 'Reset Password'
@@ -96,12 +108,12 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                               data?["headerText"] != 'Reset Password') {
                             final res = await SupabaseHelper()
                                 .verifyPhoneUser(data?["phone"], _token.text);
-                            print('PHONE VERIIFICATION RESP: ${res.error}, ${res.user}');
+                            print(
+                                'PHONE VERIIFICATION RESP: ${res.error}, ${res.user}');
                             if (res.error?.message == null) {
-                               await Navigator.popAndPushNamed(context, '/home');
+                              await Navigator.popAndPushNamed(context, '/home');
                               // Navigator.pop(context);
-                            } 
-                            else {
+                            } else {
                               return showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -115,15 +127,13 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                             }
                             _token.text = '';
                           } else {
-                            print(
-                                'QUERY PARAMS: ${Uri.base.queryParameters["access_token"]}');
                             final res = await SupabaseHelper()
                                 .updateUserPassword(
                                     Uri.base.queryParameters["access_token"]
                                         .toString(),
                                     _token.text);
                             print('UPDATE USER RES: $res');
-                            if (res.error?.message != null) {
+                            if (res.error?.message == null) {
                               print(res.user?.aud);
                               Navigator.popAndPushNamed(context, '/home');
                               //  Navigator.pop(context);

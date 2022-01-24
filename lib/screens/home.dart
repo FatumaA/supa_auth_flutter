@@ -22,7 +22,6 @@ class _HomeState extends State<Home> {
       // Future.delayed(Duration(seconds: 2));
       // print(googleData?["resSocial"]);
       print(activeUser);
-      print('object');
       if (activeSession == null || activeUser == null) {
         Navigator.popAndPushNamed(context, '/');
       }

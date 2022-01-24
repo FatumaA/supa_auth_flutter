@@ -138,7 +138,6 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                       // throw Exception(e.toString());
 
                     } else {
-                      print('reached here');
                       final res = await SupabaseHelper()
                           .createNewPasswordlessUser(_email.text);
                       if (res.error?.message != null) {

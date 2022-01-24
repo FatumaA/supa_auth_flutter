@@ -64,15 +64,7 @@ class SupabaseHelper {
   Future<bool> signInWithGoogle() async {
     final res = await supaClient.auth.signInWithProvider(Provider.google,
         options:
-            AuthOptions(redirectTo: 'http://localhost:53463/home', scopes: '')
-
-        // scopes: 'repo gist notifications',
-        // AuthOptions(redirectTo: 'http://localhost:53463/home'
-        // //  kIsWeb
-        // //     ? null
-        // //     : 'io.supabase.flutter://reset-callback/'
-        //     ),
-        );
+            AuthOptions(redirectTo: 'http://localhost:53463/home', scopes: ''));
 
     return res;
   }
@@ -97,19 +89,19 @@ class SupabaseHelper {
     return res;
   }
 
-  Future<GotrueUserResponse> getUrl(
-      String accessToken, String password) async {
-    final res = await supaClient.auth.api.updateUser(
-      accessToken,
-      UserAttributes(password: password),
-    );
+  // Future<GotrueUserResponse> getUrl(
+  //     String accessToken, String password) async {
+  //   // final res = await supaClient.auth.api.updateUser(
+  //   //   accessToken,
+  //   //   UserAttributes(password: password),
+  //   // );
 
-    //  final res = await Supabase.instance.client.auth.update(
-    //     UserAttributes(data: {'password': password})
-    // );
+  //    final res = await Supabase.instance.client.auth.update(
+  //       UserAttributes(data: {'password': password})
+  //   );
 
-    return res;
-  }
+  //   return res;
+  // }
 
   Future<GotrueUserResponse> updateUserPassword(
       String accessToken, String password) async {
@@ -118,9 +110,8 @@ class SupabaseHelper {
       UserAttributes(password: password),
     );
 
-    //  final res = await Supabase.instance.client.auth.update(
-    //     UserAttributes(data: {'password': password})
-    // );
+    final resi = await Supabase.instance.client.auth
+        .update(UserAttributes(data: {'password': password}));
 
     return res;
   }
