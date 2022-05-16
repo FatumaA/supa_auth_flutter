@@ -103,14 +103,12 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                       final res = await SupabaseHelper()
                           .resetExistingUserPassword(_email.text,
                               'http://localhost:53463/verification');
-                      print(
-                          'RES FROM RESET EXISITNG USER PASSWORD: ${res.rawData}');
                       _email.text = '';
                       if (res.error == null) {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertUI(
+                            return const AlertUI(
                               headerText: 'Passoword reset link sent!',
                               bodyText:
                                   'Please check your email/phone to continue',
@@ -144,7 +142,7 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertUI(
+                            return const AlertUI(
                               headerText: 'Verification link sent!',
                               bodyText:
                                   'Please check your email to verify and continue',

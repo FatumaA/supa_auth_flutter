@@ -22,7 +22,7 @@ Future<void> main() async {
   );
   setPathUrlStrategy();
   runApp(
-   const MyApp(),
+    const MyApp(),
   );
 }
 

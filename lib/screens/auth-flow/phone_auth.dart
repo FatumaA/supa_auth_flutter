@@ -121,7 +121,6 @@ class _PhoneAuthState extends State<PhoneAuth> {
                             },
                           );
                         } else {
-                          print('RES FROM CREATE NEW PHONE USER: $res');
                           await showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -140,7 +139,6 @@ class _PhoneAuthState extends State<PhoneAuth> {
                             .signInUserWithPhone(_phone.text, _password.text);
                         if (res.error?.message == null &&
                             res.user?.aud == 'authenticated') {
-                          print('RES FROM PHONE SIGN IN: ${res.user?.aud}');
                           await Navigator.pushNamed(context, '/home');
                         } else {
                           await showDialog(

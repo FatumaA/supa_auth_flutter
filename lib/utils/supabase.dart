@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHelper {
   final supaClient = Supabase.instance.client;
+
   // email-password sign up
   Future<GotrueSessionResponse> createNewUser(
       String email, String password) async {
@@ -26,7 +26,6 @@ class SupabaseHelper {
   Future<GotrueSessionResponse> createNewPhoneUser(
       String phone, String password) async {
     final res = await supaClient.auth.signUpWithPhone(phone, password);
-    // signUpWithPhone(phone, password);
     return res;
   }
 
@@ -123,23 +122,4 @@ class SupabaseHelper {
     return user;
   }
 
-  Session? getActiveSession() {
-    // Future.delayed(Duration(seconds: 2));
-    final sessionOne = supaClient.auth.currentSession;
-    // .session();
-    // onAuthStateChange((event, session) {
-    //    async (event, session) => {
-    //      print('SESSION: ${session}'),
-    //   };
-    // });
-    print('${sessionOne?.user?.id}');
-
-    return sessionOne;
-  }
-
-  Future<GotrueSessionResponse> getOauth2Session(Uri url) async {
-    final res = await supaClient.auth.getSessionFromUrl(url);
-    print('get Session from url : ${res.data?.user}');
-    return res;
-  }
 }

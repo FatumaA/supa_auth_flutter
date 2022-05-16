@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -11,21 +10,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Map? googleData;
-  User? activeUser = SupabaseHelper().getActiveUser();
-  Session? activeSession = SupabaseHelper().getActiveSession();
+  // User? activeUser = SupabaseHelper().getActiveUser();
+  // Session? activeSession = SupabaseHelper().getActiveSession();
 
   @override
   void initState() {
-    print(activeSession);
-    // TODO: implement initState
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      // Future.delayed(Duration(seconds: 2));
-      // print(googleData?["resSocial"]);
-      print(activeUser);
-      if (activeSession == null || activeUser == null) {
-        Navigator.popAndPushNamed(context, '/');
-      }
-    });
     super.initState();
   }
 

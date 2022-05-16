@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../ui-elements/alert.dart';
 
@@ -108,8 +107,6 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                               data?["headerText"] != 'Reset Password') {
                             final res = await SupabaseHelper()
                                 .verifyPhoneUser(data?["phone"], _token.text);
-                            print(
-                                'PHONE VERIIFICATION RESP: ${res.error}, ${res.user}');
                             if (res.error?.message == null) {
                               await Navigator.popAndPushNamed(context, '/home');
                               // Navigator.pop(context);
@@ -132,9 +129,7 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                                     Uri.base.queryParameters["access_token"]
                                         .toString(),
                                     _token.text);
-                            print('UPDATE USER RES: $res');
                             if (res.error?.message == null) {
-                              print(res.user?.aud);
                               Navigator.popAndPushNamed(context, '/home');
                               //  Navigator.pop(context);
                             } else {

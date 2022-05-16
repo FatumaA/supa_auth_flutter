@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:supa_auth_flutter/utils/supabase.dart';
 
 class AlertUI extends StatefulWidget {
-  String headerText, bodyText, closeAlertBtnText;
+  final String headerText, bodyText, closeAlertBtnText;
 
-  AlertUI({
+  const AlertUI({
     Key? key,
     required this.headerText,
     required this.bodyText,

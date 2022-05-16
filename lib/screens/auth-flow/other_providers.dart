@@ -3,9 +3,9 @@ import 'package:supa_auth_flutter/ui-elements/alert.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 
 class OtherProviders extends StatefulWidget {
-  String contextText;
+  final String contextText;
 
-  OtherProviders({Key? key, required this.contextText}) : super(key: key);
+  const OtherProviders({Key? key, required this.contextText}) : super(key: key);
 
   @override
   _OtherProvidersState createState() => _OtherProvidersState();
@@ -44,12 +44,11 @@ class _OtherProvidersState extends State<OtherProviders> {
                 onPressed: () async {
                   final res = await SupabaseHelper().signInWithGoogle();
                   await Future.delayed(const Duration(seconds: 2));
-                  print('GOOGLEEEE: $res');
                   if (res != true) {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return AlertUI(
+                        return const AlertUI(
                           headerText: 'Something went wrong',
                           bodyText: 'error',
                           closeAlertBtnText: 'Ok',

@@ -106,7 +106,6 @@ class _AuthFormState extends State<AuthForm> {
                         widget.titleText == 'Sign In') {
                       final res = await SupabaseHelper()
                           .signInExistingUser(_email.text, _password.text);
-                          print('RESSSS: ${res}');
                       if (res.error?.message != null) {
                         await showDialog(
                           context: context,
@@ -125,7 +124,7 @@ class _AuthFormState extends State<AuthForm> {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertUI(
+                            return const AlertUI(
                               headerText: 'Success!',
                               bodyText:
                                   'Registration successfully, taking you to home screen',
@@ -154,7 +153,7 @@ class _AuthFormState extends State<AuthForm> {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertUI(
+                            return const AlertUI(
                               headerText: 'Success!',
                               bodyText:
                                   'Registration successfully, taking you to home screen',

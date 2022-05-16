@@ -13,8 +13,8 @@ class SignUp extends StatelessWidget {
         title: const Text('SupaFlutter Auth'),
       ),
       body: Column(
-        children: [
-          const AuthForm(
+        children: const [
+          AuthForm(
             titleText: 'Sign Up',
           ),
           OtherProviders(contextText: 'Sign Up'),
