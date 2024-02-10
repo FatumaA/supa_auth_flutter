@@ -3,6 +3,8 @@ import 'package:supa_auth_flutter/utils/supabase.dart';
 
 import '../../ui-elements/alert.dart';
 
+var supabaseHelper = SupabaseHelper();
+
 class VerificationsAlertUI extends StatefulWidget {
   // String headerText;
   // String? phone, ctxText;
@@ -28,17 +30,6 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
     _token.dispose();
     super.dispose();
   }
-
-  // test() {
-  //   final uriParameters = SupabaseAuth.instance.parseUriParameters(Uri.base);
-  //   // if (uriParameters.containsKey('access_token') &&
-  //   //     uriParameters.containsKey('refresh_token') &&
-  //   //     uriParameters.containsKey('expires_in')) {
-  //   //   /// Uri.base is a auth redirect link
-  //   //   /// Call recoverSessionFromUrl to continue
-  //   //   recoverSessionFromUrl(Uri.base);
-  //   // }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -105,18 +96,18 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate() &&
                               data?["headerText"] != 'Reset Password') {
-                            final res = await SupabaseHelper()
-                                .verifyPhoneUser(data?["phone"], _token.text);
-                            if (res.error?.message == null) {
+                            final res = await supabaseHelper.verifyPhoneUser(
+                                data?["phone"], _token.text);
+                            if (res.user != null) {
                               await Navigator.popAndPushNamed(context, '/home');
                               // Navigator.pop(context);
                             } else {
                               return showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return AlertUI(
+                                  return const AlertUI(
                                     headerText: 'Error',
-                                    bodyText: res.error?.message as String,
+                                    bodyText: 'No user found',
                                     closeAlertBtnText: 'Got it',
                                   );
                                 },
@@ -124,21 +115,20 @@ class _VerificationsAlertUIState extends State<VerificationsAlertUI> {
                             }
                             _token.text = '';
                           } else {
-                            final res = await SupabaseHelper()
-                                .updateUserPassword(
-                                    Uri.base.queryParameters["access_token"]
-                                        .toString(),
-                                    _token.text);
-                            if (res.error?.message == null) {
+                            final res = await supabaseHelper.updateUserPassword(
+                                Uri.base.queryParameters["access_token"]
+                                    .toString(),
+                                _token.text);
+                            if (res.user != null) {
                               Navigator.popAndPushNamed(context, '/home');
                               //  Navigator.pop(context);
                             } else {
                               return showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return AlertUI(
+                                  return const AlertUI(
                                     headerText: 'Error',
-                                    bodyText: res.error?.message as String,
+                                    bodyText: 'User not found',
                                     closeAlertBtnText: 'Got it',
                                   );
                                 },
