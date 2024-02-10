@@ -4,6 +4,8 @@ import 'package:email_validator/email_validator.dart';
 
 import 'alert.dart';
 
+var supabaseHelper = SupabaseHelper();
+
 class EmailOnlyFieldForm extends StatefulWidget {
   final String titleText;
 
@@ -100,70 +102,70 @@ class _EmailOnlyFieldFormState extends State<EmailOnlyFieldForm> {
                     if (_formKey.currentState!.validate() &&
                         widget.titleText ==
                             'Enter your email address/phone to reset your password') {
-                      final res = await SupabaseHelper()
-                          .resetExistingUserPassword(_email.text,
+                      final res =
+                          await supabaseHelper.resetExistingUserPassword(
+                              _email.text,
                               'http://localhost:53463/verification');
                       _email.text = '';
-                      if (res.error == null) {
-                        await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return const AlertUI(
-                              headerText: 'Passoword reset link sent!',
-                              bodyText:
-                                  'Please check your email/phone to continue',
-                              closeAlertBtnText: 'Got it',
-                            );
-                          },
-                        );
-                      }
+                      // if (res == null) {
+                      //   await showDialog(
+                      //     context: context,
+                      //     builder: (BuildContext context) {
+                      //       return const AlertUI(
+                      //         headerText: 'Passoword reset link sent!',
+                      //         bodyText:
+                      //             'Please check your email/phone to continue',
+                      //         closeAlertBtnText: 'Got it',
+                      //       );
+                      //     },
+                      //   );
+                      // }
 
                       // Navigator.popAndPushNamed(context, '/home');
-                      else {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertUI(
-                              headerText: 'Oops! Something went wrong',
-                              bodyText: res.error!.message,
-                              closeAlertBtnText: 'Got it',
-                            );
-                          },
-                        );
-                      }
+                      // else {
+                      //   showDialog(
+                      //     context: context,
+                      //     builder: (BuildContext context) {
+                      //       return AlertUI(
+                      //         headerText: 'Oops! Something went wrong',
+                      //         bodyText: res.error!.message,
+                      //         closeAlertBtnText: 'Got it',
+                      //       );
+                      //     },
+                      //   );
+                      // }
 
                       _email.text = '';
                       // throw Exception(e.toString());
-
                     } else {
-                      final res = await SupabaseHelper()
-                          .createNewPasswordlessUser(_email.text);
-                      if (res.error?.message != null) {
-                        await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return const AlertUI(
-                              headerText: 'Verification link sent!',
-                              bodyText:
-                                  'Please check your email to verify and continue',
-                              closeAlertBtnText: 'Got it',
-                            );
-                          },
-                        );
-                        _email.text = '';
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertUI(
-                              headerText: 'Oops! Something went wrong',
-                              bodyText: res.error!.message,
-                              closeAlertBtnText: 'Got it',
-                            );
-                          },
-                        );
-                        _email.text = '';
-                      }
+                      final res =
+                          await supabaseHelper.createMagicLinkUser(_email.text);
+                      // if (res.error?.message != null) {
+                      //   await showDialog(
+                      //     context: context,
+                      //     builder: (BuildContext context) {
+                      //       return const AlertUI(
+                      //         headerText: 'Verification link sent!',
+                      //         bodyText:
+                      //             'Please check your email to verify and continue',
+                      //         closeAlertBtnText: 'Got it',
+                      //       );
+                      //     },
+                      //   );
+                      //   _email.text = '';
+                      // } else {
+                      //   showDialog(
+                      //     context: context,
+                      //     builder: (BuildContext context) {
+                      //       return AlertUI(
+                      //         headerText: 'Oops! Something went wrong',
+                      //         bodyText: res.error!.message,
+                      //         closeAlertBtnText: 'Got it',
+                      //       );
+                      //     },
+                      //   );
+                      //   _email.text = '';
+                      // }
                     }
                   },
                 ),

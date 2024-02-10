@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:supa_auth_flutter/ui-elements/alert.dart';
 import 'package:supa_auth_flutter/utils/supabase.dart';
 
+var supabaseHelper = SupabaseHelper();
+
 class PhoneAuth extends StatefulWidget {
   const PhoneAuth({Key? key}) : super(key: key);
 
@@ -109,9 +111,9 @@ class _PhoneAuthState extends State<PhoneAuth> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate() &&
                           ctxText?['ctxText'] == 'Sign Up') {
-                        final res = await SupabaseHelper()
-                            .createNewPhoneUser(_phone.text, _password.text);
-                        if (res.error?.message == null) {
+                        final res = await supabaseHelper.createNewPhoneUser(
+                            _phone.text, _password.text);
+                        if (res.user == null) {
                           Navigator.popAndPushNamed(
                             context,
                             '/verification',
@@ -124,9 +126,9 @@ class _PhoneAuthState extends State<PhoneAuth> {
                           await showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AlertUI(
+                              return const AlertUI(
                                 headerText: 'Something went wrong',
-                                bodyText: res.error?.message as String,
+                                bodyText: 'Couldn\'t sign in, please try again',
                                 closeAlertBtnText: 'Got it',
                               );
                             },
@@ -135,18 +137,18 @@ class _PhoneAuthState extends State<PhoneAuth> {
                         _phone.text = '';
                         _password.text = '';
                       } else {
-                        final res = await SupabaseHelper()
-                            .signInUserWithPhone(_phone.text, _password.text);
-                        if (res.error?.message == null &&
+                        final res = await supabaseHelper.signInUserWithPhone(
+                            _phone.text, _password.text);
+                        if (res.user != null &&
                             res.user?.aud == 'authenticated') {
                           await Navigator.pushNamed(context, '/home');
                         } else {
                           await showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AlertUI(
+                              return const AlertUI(
                                 headerText: 'Something went wrong',
-                                bodyText: res.error?.message as String,
+                                bodyText: 'Couldn\'t sign in, please try again',
                                 closeAlertBtnText: 'Got it',
                               );
                             },

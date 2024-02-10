@@ -4,6 +4,8 @@ import 'package:email_validator/email_validator.dart';
 
 import 'alert.dart';
 
+var supabaseHelper = SupabaseHelper();
+
 class AuthForm extends StatefulWidget {
   final String titleText;
   const AuthForm({Key? key, required this.titleText}) : super(key: key);
@@ -104,15 +106,15 @@ class _AuthFormState extends State<AuthForm> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate() &&
                         widget.titleText == 'Sign In') {
-                      final res = await SupabaseHelper()
-                          .signInExistingUser(_email.text, _password.text);
-                      if (res.error?.message != null) {
+                      final res = await supabaseHelper.signInExistingUser(
+                          _email.text, _password.text);
+                      if (res.user == null) {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertUI(
+                            return const AlertUI(
                               headerText: 'Error',
-                              bodyText: res.error!.message,
+                              bodyText: 'Something went wrong',
                               closeAlertBtnText: 'Got it',
                             );
                           },
@@ -135,15 +137,15 @@ class _AuthFormState extends State<AuthForm> {
                         Navigator.popAndPushNamed(context, '/home');
                       }
                     } else {
-                      final res = await SupabaseHelper()
-                          .createNewUser(_email.text, _password.text);
-                      if (res.error?.message != null) {
+                      final res = await supabaseHelper.createNewUser(
+                          _email.text, _password.text);
+                      if (res.user == null) {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertUI(
+                            return const AlertUI(
                               headerText: 'Error',
-                              bodyText: res.error!.message,
+                              bodyText: 'Something went wrong',
                               closeAlertBtnText: 'Got it',
                             );
                           },
